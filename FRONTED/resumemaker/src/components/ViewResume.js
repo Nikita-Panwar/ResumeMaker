@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import './view.css'; // Import the CSS file for styling
 
 function ViewResume() {
-  const [resume, setResume] = useState(null);
-
-  // Load resume data on component mount
-  useEffect(() => {
-    // Fetch the resume data from API (or local storage)
-    const fetchedResume = {
-      name: 'John Doe',
-      email: 'john@example.com',
-      summary: 'Experienced software developer...',
-      experience: '5 years at XYZ Corp.',
-    };
-    setResume(fetchedResume);
-  }, []);
+  const location = useLocation();
+  const { resume } = location.state || {}; // Get the updated resume data from state
 
   if (!resume) {
-    return <div>Loading resume...</div>;
+    return <p>No resume data found. Please create or edit a resume.</p>;
   }
 
   return (
-    <div>
-      <h2>View Resume</h2>
-      <p><strong>Name:</strong> {resume.name}</p>
-      <p><strong>Email:</strong> {resume.email}</p>
-      <p><strong>Summary:</strong> {resume.summary}</p>
-      <p><strong>Experience:</strong> {resume.experience}</p>
+    <div className="view-resume-container">
+      <h2 className="resume-title">View Resume</h2>
+      <div className="resume-details">
+        <p><strong>Name:</strong> {resume.name}</p>
+        <p><strong>Email:</strong> {resume.email}</p>
+        <p><strong>Summary:</strong> {resume.summary}</p>
+        <p><strong>Experience:</strong> {resume.experience}</p>
+      </div>
     </div>
   );
 }

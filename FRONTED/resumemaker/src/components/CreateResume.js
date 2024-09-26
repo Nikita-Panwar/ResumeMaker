@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function CreateResume() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [summary, setSummary] = useState('');
-  const [experience, setExperience] = useState('');
+  const [resumeData, setResumeData] = useState({
+    name: '',
+    email: '',
+    summary: '',
+    experience: '',
+  });
+  
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setResumeData({
+      ...resumeData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle creating resume logic here
-    console.log('Resume Created', { name, email, summary, experience });
+    // Store the resume data in localStorage
+    localStorage.setItem('resumeData', JSON.stringify(resumeData));
+    navigate('/view-resume', { state: { resume: resumeData } });
   };
 
   return (
@@ -18,30 +31,37 @@ function CreateResume() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
+          name="name"
           placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={resumeData.name}
+          onChange={handleChange}
+          required
         />
         <input
           type="email"
+          name="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={resumeData.email}
+          onChange={handleChange}
+          required
         />
         <textarea
+          name="summary"
           placeholder="Summary"
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
+          value={resumeData.summary}
+          onChange={handleChange}
+          required
         />
         <textarea
+          name="experience"
           placeholder="Experience"
-          value={experience}
-          onChange={(e) => setExperience(e.target.value)}
+          value={resumeData.experience}
+          onChange={handleChange}
+          required
         />
         <button type="submit">Create Resume</button>
       </form>
     </div>
   );
 }
-
 export default CreateResume;

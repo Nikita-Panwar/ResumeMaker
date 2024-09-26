@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function EditResume() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [summary, setSummary] = useState('');
   const [experience, setExperience] = useState('');
+  const navigate = useNavigate();
 
-  // Load existing resume data on component mount (you can fetch this data)
   useEffect(() => {
-    // For demonstration purposes, assume these values are fetched from API
-    setName('John Doe');
-    setEmail('john@example.com');
-    setSummary('Experienced software developer...');
-    setExperience('5 years at XYZ Corp.');
-  }, []);
+    // Check if resume data exists (can be fetched from API or local storage)
+    const storedResume = JSON.parse(localStorage.getItem('resumeData'));
+
+    if (storedResume) {
+      // Resume exists, load data into state
+      setName(storedResume.name || '');
+      setEmail(storedResume.email || '');
+      setSummary(storedResume.summary || '');
+      setExperience(storedResume.experience || '');
+    } else {
+      // No resume found, redirect to create resume page
+      navigate('/create-resume');
+    }
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle editing resume logic here
-    console.log('Resume Updated', { name, email, summary, experience });
+    const updatedResume = { name, email, summary, experience };
+    
+    // Save the updated resume data (you can use localStorage or send it to an API)
+    localStorage.setItem('resumeData', JSON.stringify(updatedResume));
+
+    // Redirect to the "View Resume" page with updated data
+    navigate('/view-resume', { state: { resume: updatedResume } });
   };
 
   return (
