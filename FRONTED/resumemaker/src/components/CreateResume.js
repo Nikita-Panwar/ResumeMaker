@@ -18,6 +18,10 @@ function CreateResume() {
     });
   };
 
+
+
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Store the resume data in localStorage
@@ -64,4 +68,4 @@ function CreateResume() {
     </div>
   );
 }
-export default CreateResume;
+export default CreateResume; 
